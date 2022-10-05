@@ -101,7 +101,7 @@ class AuthTests {
 		resultActions
 				.andExpect(status().is4xxClientError());
 
-		mvc
+		resultActions = mvc
 				.perform(
 						post("/member/login")
 								.content("""
@@ -119,4 +119,43 @@ class AuthTests {
 				.andExpect(status().is4xxClientError());
 	}
 
+
+	@Test
+	@DisplayName("POST /member/login 호출할 때 올바르지 않는 username 이나 password를 받으면 400 에러가 뜬다")
+	void t4() throws Exception{
+		// When
+		ResultActions resultActions = mvc
+				.perform(
+						post("/member/login")
+								.content("""
+                                        {
+                                            "username": "user3",
+                                            "password": "1234"
+                                        }
+                                        """.stripIndent())
+								.contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8))
+				)
+				.andDo(print());
+
+		// Then
+		resultActions
+				.andExpect(status().is4xxClientError());
+
+		resultActions = mvc
+				.perform(
+						post("/member/login")
+								.content("""
+                                        {
+                                            "username": "user1",
+                                            "password": "12345"
+                                        }
+                                        """.stripIndent())
+								.contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8))
+				)
+				.andDo(print());
+
+		// Then
+		resultActions
+				.andExpect(status().is4xxClientError());
+	}
 }
