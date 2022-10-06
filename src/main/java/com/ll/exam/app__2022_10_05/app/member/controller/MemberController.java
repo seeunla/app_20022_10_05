@@ -41,9 +41,8 @@ public class MemberController {
         }
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authentication", "JWT토큰");
+        headers.set("Authentication", "JWT_Access_Token");
 
-        String body = "username : %s, password : %s".formatted(loginDto.getUsername(), loginDto.getPassword());
 
         return Util.spring.responseEntityOf(RsData.of("S-1", "로그인 성공, Access Token을 발급합니다."), headers);
     }
